@@ -26,8 +26,8 @@ compinit
 # End of lines added by compinstall
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.config/zsh/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=50000
+SAVEHIST=50000
 setopt autocd extendedglob nomatch notify
 unsetopt beep
 bindkey -v
@@ -101,6 +101,26 @@ bindkey -M menuselect '^N' menu-complete
 bindkey -M menuselect '^P' reverse-menu-complete
 bindkey -M menuselect '^Y' accept-line
 bindkey -M menuselect '^E' send-break
+
+# History
+setopt share_history        # every open shell sees commands from the others as they run
+setopt extended_history     # store a timestamp and duration with each command
+setopt hist_ignore_all_dups # repeating a command drops its older copy
+setopt hist_ignore_space    # a command starting with a space isn't saved
+setopt hist_reduce_blanks
+setopt hist_verify          # !!, !$ etc. expand onto the line instead of running at once
+
+# Up/Down (and k/j in normal mode) only walk through history entries that
+# start with what's already typed; on an empty line they behave as usual
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey -M viins '^[[A' up-line-or-beginning-search
+bindkey -M viins '^[[B' down-line-or-beginning-search
+bindkey -M viins '^[OA' up-line-or-beginning-search
+bindkey -M viins '^[OB' down-line-or-beginning-search
+bindkey -M vicmd 'k' up-line-or-beginning-search
+bindkey -M vicmd 'j' down-line-or-beginning-search
 
 # Plugins
 
