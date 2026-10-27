@@ -35,3 +35,45 @@ bindkey -v
 
 # extendedglob makes ^ and ~ special, which breaks HEAD^ / HEAD~2
 alias git='noglob git'
+
+# Prompt: vi mode, directory, git branch (and rebase/merge state), red %/# after a failed command
+autoload -Uz vcs_info add-zsh-hook
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git:*' formats ' %F{magenta}%b%f'
+zstyle ':vcs_info:git:*' actionformats ' %F{magenta}%b%f %F{red}(%a)%f'
+add-zsh-hook precmd vcs_info
+
+vimode='%F{green}I%f'
+function zle-line-init zle-keymap-select {
+  if [[ $KEYMAP == vicmd ]]; then
+    vimode='%F{yellow}N%f'
+  else
+    vimode='%F{green}I%f'
+  fi
+  zle reset-prompt
+}
+zle -N zle-line-init
+zle -N zle-keymap-select
+KEYTIMEOUT=1    # switch to normal mode right after Esc instead of waiting 0.4s
+
+# Transient prompt: once a line is accepted, redraw its prompt as just %/#
+# so scrollback shows only the commands
+function zle-line-finish {
+  PROMPT=$transient_prompt
+  zle reset-prompt
+}
+zle -N zle-line-finish
+function restore-full-prompt { PROMPT=$full_prompt }
+add-zsh-hook precmd restore-full-prompt
+
+setopt prompt_subst
+full_prompt=$'%F{blue}%~%f${vcs_info_msg_0_}\n${vimode} %(?.%F{green}.%F{red})%#%f '
+transient_prompt='%(?.%F{green}.%F{red})%#%f '
+PROMPT=$full_prompt
+
+# In vi insert mode, Backspace, ^W and ^U normally stop at the point where
+# insert mode was entered; make them delete freely like in emacs mode
+bindkey -M viins '^?' backward-delete-char
+bindkey -M viins '^H' backward-delete-char
+bindkey -M viins '^W' backward-kill-word
+bindkey -M viins '^U' backward-kill-line
