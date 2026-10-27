@@ -66,8 +66,22 @@ zle -N zle-line-finish
 function restore-full-prompt { PROMPT=$full_prompt }
 add-zsh-hook precmd restore-full-prompt
 
+# Fill the rest of the info line with ─ up to the right edge
+function prompt-fill {
+  local info=${(%):-%~$vcs_info_msg_0_}
+  info=${info//$'\e'\[[0-9;]#m/}    # strip colour codes before measuring
+  local -i n=$(( COLUMNS - ${#info} - 1 ))
+  (( n < 0 )) && n=0
+  prompt_fill=${(pl:$n::─:)}
+}
+add-zsh-hook precmd prompt-fill
+function TRAPWINCH {
+  prompt-fill
+  zle && zle reset-prompt
+}
+
 setopt prompt_subst
-full_prompt=$'%F{blue}%~%f${vcs_info_msg_0_}\n${vimode} %(?.%F{green}.%F{red})%#%f '
+full_prompt=$'%F{blue}%~%f${vcs_info_msg_0_} %F{8}${prompt_fill}%f\n${vimode} %(?.%F{green}.%F{red})%#%f '
 transient_prompt='%(?.%F{green}.%F{red})%#%f '
 PROMPT=$full_prompt
 
