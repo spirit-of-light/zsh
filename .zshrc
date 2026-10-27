@@ -101,3 +101,17 @@ bindkey -M menuselect '^N' menu-complete
 bindkey -M menuselect '^P' reverse-menu-complete
 bindkey -M menuselect '^Y' accept-line
 bindkey -M menuselect '^E' send-break
+
+# Plugins
+
+# fzf: ^R fuzzy history, ^T insert files, Alt-C cd into a directory
+source <(fzf --zsh)
+
+# Grey suggestion from history (or completion) as you type; → or ^F accepts it
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+bindkey -M viins '^F' autosuggest-accept
+
+# Must stay last: it wraps every widget defined before it
+source /usr/local/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
