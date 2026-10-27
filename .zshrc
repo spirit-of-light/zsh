@@ -80,6 +80,10 @@ bindkey -M menuselect '^P' reverse-menu-complete
 bindkey -M menuselect '^Y' accept-line
 bindkey -M menuselect '^E' send-break
 
+# Cache results of slow completions (pkg install <Tab> and the like)
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.cache/zsh/compcache
+
 # History
 setopt share_history        # every open shell sees commands from the others as they run
 setopt extended_history     # store a timestamp and duration with each command
@@ -99,6 +103,25 @@ bindkey -M viins '^[OA' up-line-or-beginning-search
 bindkey -M viins '^[OB' down-line-or-beginning-search
 bindkey -M vicmd 'k' up-line-or-beginning-search
 bindkey -M vicmd 'j' down-line-or-beginning-search
+
+# Directories: every cd is pushed onto the directory stack, so cd -<Tab>
+# offers a menu of recently visited directories
+setopt auto_pushd pushd_ignore_dups pushd_silent
+DIRSTACKSIZE=20
+
+# Colours in FreeBSD's ls without needing -G
+export CLICOLOR=1
+
+# zmv: batch renames with patterns, e.g. zmv '(*).jpeg' '$1.jpg' (-n previews)
+autoload -Uz zmv
+
+# run-help: K in normal mode or Alt-h in insert mode shows help for the command
+# being typed (man page, zsh builtin docs, or git/sudo subcommands) and keeps the line
+(( $+aliases[run-help] )) && unalias run-help
+autoload -Uz run-help run-help-git run-help-sudo
+HELPDIR=/usr/local/share/zsh/$ZSH_VERSION/help
+bindkey -M vicmd 'K' run-help
+bindkey -M viins '^[h' run-help
 
 source $ZDOTDIR/aliases.zsh
 source $ZDOTDIR/vi-mode.zsh
