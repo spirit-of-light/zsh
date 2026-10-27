@@ -77,3 +77,13 @@ bindkey -M viins '^?' backward-delete-char
 bindkey -M viins '^H' backward-delete-char
 bindkey -M viins '^W' backward-kill-word
 bindkey -M viins '^U' backward-kill-line
+
+# Completion like Neovim's: ^N/^P open the menu on the first/last match and
+# move through it, ^Y accepts, ^E cancels and restores what was typed
+zmodload zsh/complist
+bindkey -M viins '^N' menu-complete
+bindkey -M viins '^P' reverse-menu-complete
+bindkey -M menuselect '^N' menu-complete
+bindkey -M menuselect '^P' reverse-menu-complete
+bindkey -M menuselect '^Y' accept-line
+bindkey -M menuselect '^E' send-break
