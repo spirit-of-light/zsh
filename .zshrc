@@ -124,6 +124,7 @@ bindkey -M vicmd 'K' run-help
 bindkey -M viins '^[h' run-help
 
 source $ZDOTDIR/aliases.zsh
+source $ZDOTDIR/pkg.zsh
 source $ZDOTDIR/vi-mode.zsh
 
 # Plugins
