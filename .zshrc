@@ -111,6 +111,14 @@ DIRSTACKSIZE=20
 
 # Colours in FreeBSD's ls without needing -G
 export CLICOLOR=1
+export LESS_TERMCAP_mb=$'\e[1;31m'     # blink: bold red
+export LESS_TERMCAP_md=$'\e[1;36m'     # bold (headings, commands): bold cyan
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[1;33;44m'  # standout (status line, search hits): yellow on blue
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[4;32m'     # underline (arguments, paths): underlined green
+export LESS_TERMCAP_ue=$'\e[0m'
+export GROFF_NO_SGR=1                  # keep groff's output in the same form, if it's ever used
 
 # zmv: batch renames with patterns, e.g. zmv '(*).jpeg' '$1.jpg' (-n previews)
 autoload -Uz zmv
