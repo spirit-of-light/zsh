@@ -8,3 +8,5 @@ alias gits='git status'
 alias gita='git add'
 alias gitaa='git add --all'
 alias gitc='git commit -a'
+
+alias e='$EDITOR'
