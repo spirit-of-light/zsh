@@ -133,6 +133,7 @@ bindkey -M viins '^[h' run-help
 
 source $ZDOTDIR/aliases.zsh
 source $ZDOTDIR/pkg.zsh
+source $ZDOTDIR/man.zsh
 source $ZDOTDIR/vi-mode.zsh
 
 # Plugins
