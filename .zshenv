@@ -4,6 +4,7 @@ export WEBKIT_DISABLE_DMABUF_RENDERER=1
 export BROWSER=surf
 typeset -U path PATH
 path+=(/usr/local/texlive/*/bin/amd64-freebsd(N[-1]))
+path+=(/usr/local/heirloom/bin)
 
 # Token for the Claude Code GitHub plugin (MCP server), taken from the gh login
 if [[ -z $GITHUB_PERSONAL_ACCESS_TOKEN ]] && (( $+commands[gh] )); then
