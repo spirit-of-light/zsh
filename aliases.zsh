@@ -12,3 +12,5 @@ alias gitc='git commit -a'
 alias e='$EDITOR'
 
 alias ccf='cc -std=c17 -Wall -Wextra -pedantic -Werror -g -fsanitize=address,undefined'
+
+alias cr='claude --resume'
